@@ -17,10 +17,10 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  project:{
-    type:String,
-    required:true
-  }
+  project: {
+    type: String,
+    required: true,
+  },
 });
 
 const user = mongoose.model("user", userSchema);

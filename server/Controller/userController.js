@@ -15,7 +15,7 @@ export const userLogin = async (req, res, next) => {
           httpOnly: true,
         })
         .status(201)
-        .json({token,user});
+        .json({ token, user });
     }
   } catch (error) {
     next(error);
@@ -28,9 +28,11 @@ export const userDeteils = async (req, res, next) => {
     const ifExist = await userSchema.findOne({ phone });
     if (ifExist)
       return next(
-        createError(400, { phone: ifExist.phone, nama: ifExist.name })
+        createError(400, { phone: ifExist.phone, name: ifExist.name })
       );
-    await userSchema.findOneAndUpdate(email, { $set: req.body });
+    await userSchema.findOneAndUpdate(email, {
+      $set: { name, phone, project },
+    });
     res.status(200).json("success");
   } catch (error) {
     next(error);

@@ -17,19 +17,19 @@ function UserLogin() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-     useEffect(() => {
-        const auth=localStorage.getItem("userToken")
-        if(auth){
-         navigate("/home")
-        }
-    }, [])
+  useEffect(() => {
+    const auth = localStorage.getItem("userToken");
+    if (auth) {
+      navigate("/home");
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const data = { email, password };
       const logined = await axios.post("/api/users/login", data);
-      localStorage.setItem('userToken',logined.data.token)
+      localStorage.setItem("userToken", logined.data.token);
       navigate("/home");
     } catch (error) {
       setError(error.response.data.message);
@@ -50,7 +50,6 @@ function UserLogin() {
             SIGN IN
           </Typography>
         </Grid>
-
         <Grid mt={5}>
           {error ? (
             <Typography color="error.main" variant="subtitle1" component="div">
@@ -59,6 +58,7 @@ function UserLogin() {
           ) : (
             ""
           )}
+
           <TextField
             required
             style={{ marginTop: "10px" }}
@@ -81,6 +81,7 @@ function UserLogin() {
         <Grid mt={3}></Grid>
         <Button
           type="submit"
+          disabled={Boolean(email === "" || password === "")}
           onClick={handleSubmit}
           variant="contained"
           style={{
@@ -92,6 +93,7 @@ function UserLogin() {
         >
           Submit
         </Button>
+
         <Typography mt={1} variant="body1">
           Forgot Password?
         </Typography>

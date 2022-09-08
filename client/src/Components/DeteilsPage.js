@@ -11,28 +11,33 @@ import {
   MenuItem,
 } from "@mui/material";
 import { Formik } from "formik";
-import {detailsValidation} from '../formValidation/deteilsValidation'
+import { detailsValidation } from "../formValidation/deteilsValidation";
 import axios from "axios";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function DeteilsPage() {
-    const handleSubmit = async(e,values)=>{
-        try {
-            await axios.post('/api/users/addDeteils',values)
-            toast("Successfully created")
-        } catch (error) {
-            toast('🦄 Wow so easy!', {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                });
+  const handleSubmit = async (e, values) => {
+    console.log(values);
+    try {
+      await axios.post("/api/users/addDeteils", values);
+      toast("Successfully created");
+    } catch (error) {
+      console.log(error);
+      toast.error(
+        `Already Taken ${JSON.stringify(error.response.data.message)}`,
+        {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
         }
+      );
     }
+  };
   return (
     <Grid container mt={5}>
       <Paper
@@ -107,35 +112,35 @@ function DeteilsPage() {
                     required
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    label="Age"
+                    label="Project"
                     name="projects"
                     error={Boolean(touched.projects && errors.projects)}
-                  helperText={touched.projects && errors.projects}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.projects}
+                    helperText={touched.projects && errors.projects}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.project}
                   >
-                    <MenuItem value='Project1'>Project1</MenuItem>
-                    <MenuItem value='Project2'>Project2</MenuItem>
-                    <MenuItem value='Project3'>Project3</MenuItem>
+                    <MenuItem value="Project1">Project1</MenuItem>
+                    <MenuItem value="Project2">Project2</MenuItem>
+                    <MenuItem value="Project3">Project3</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
               <Grid mt={3}></Grid>
               <Button
-               onClick={(e) => handleSubmit(e, values)}
+                onClick={(e) => handleSubmit(e, values)}
                 type="submit"
                 variant="contained"
                 disabled={Boolean(
-                    errors.email ||
-                      values.email === "" ||
-                      errors.phone ||
-                      values.phone === "" ||
-                      errors.projects ||
-                      values.projects === "" ||
-                      errors.name ||
-                      values.name === "" 
-                  )}
+                  errors.email ||
+                    values.email === "" ||
+                    errors.phone ||
+                    values.phone === "" ||
+                    errors.projects ||
+                    values.projects === "" ||
+                    errors.name ||
+                    values.name === ""
+                )}
                 style={{
                   color: "white",
                   backgroundColor: "darkblue",
@@ -155,4 +160,3 @@ function DeteilsPage() {
 }
 
 export default DeteilsPage;
-
