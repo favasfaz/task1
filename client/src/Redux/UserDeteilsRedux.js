@@ -3,9 +3,8 @@ import axios from "axios";
 const initialState = {
   loading: false,
   userDeteils: [],
-  alarms :[],
+  alarms: [],
   error: "",
-
 };
 
 export const userDeteils = createAsyncThunk("users/userDeteils", async () => {
@@ -13,15 +12,18 @@ export const userDeteils = createAsyncThunk("users/userDeteils", async () => {
   return user.data;
 });
 
- const usersSlice = createSlice({
+const usersSlice = createSlice({
   name: "users",
   initialState,
-  reducers:{
-    addingAlarm:(state,action)=>{
-      state.alarms.includes(action.payload)
-        state.alarms.push(action.payload)
-    }
-},
+  reducers: {
+    addingAlarm: (state, action) => {
+      if (state.alarms.includes(action.payload)) {
+      (state.error = "you already set reminder");
+      } else {
+        state.alarms.push(action.payload);
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(userDeteils.pending, (state) => {
       state.loading = true;
@@ -36,9 +38,8 @@ export const userDeteils = createAsyncThunk("users/userDeteils", async () => {
       state.userDeteils = [];
       state.error = action.payload;
     });
-    
   },
 });
 
-export const {addingAlarm} = usersSlice.actions
+export const { addingAlarm } = usersSlice.actions;
 export default usersSlice.reducer;

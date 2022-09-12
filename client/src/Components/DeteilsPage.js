@@ -16,7 +16,6 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {useNavigate} from 'react-router-dom'
-import SetTimout from "./SetTimout";
 
 function DeteilsPage() {
   const navigate = useNavigate()
@@ -68,7 +67,6 @@ function DeteilsPage() {
             errors,
             touched,
             handleBlur,
-            onSubmit,
           }) => (
             <div>
               <Grid mt={5}>

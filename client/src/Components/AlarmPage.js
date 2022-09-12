@@ -10,17 +10,16 @@ import { TextField, Typography } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import {addingAlarm} from '../Redux/UserDeteilsRedux'
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function AlertDialogSlide({ open, setOpen }) {
-  const [age, setAge] = React.useState("");
-  console.log(age,'age');
+  const users = useSelector(state =>state.users)
   const [text, setText] = React.useState("");
   const [error, setError] = useState('');
   let hours = new Date().getHours();
@@ -62,22 +61,23 @@ export default function AlertDialogSlide({ open, setOpen }) {
     }
   }
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
 
   const handleClose = () => {
     setOpen(false);
   };
 
   const handleChange = (e) => {
-    setAge(e.target.value);
+    setText(e.target.value);
     setDtime(e.target.value);
   };
 
   const handleSubmit = async() => {
-   await dispatch(addingAlarm(age))
+   await dispatch(addingAlarm(text))
+   if(users.error.length > 0){
+    setError(users.error)
+   }else{
     navigate(`/timout/${dTime}`);
+   }
   };
 
   return (
@@ -105,12 +105,12 @@ export default function AlertDialogSlide({ open, setOpen }) {
               onKeyUp={(e)=>handleText(e)}
             />
             <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-              <InputLabel id="demo-select-small">Age</InputLabel>
+              <InputLabel id="demo-select-small">text</InputLabel>
               <Select
                 labelId="demo-select-small"
                 id="demo-select-small"
-                value={age}
-                label="Age"
+                value={text}
+                label="alarm"
                 onChange={(e) => handleChange(e)}
 
               >
@@ -127,7 +127,7 @@ export default function AlertDialogSlide({ open, setOpen }) {
         <DialogActions>
           <Button  disabled={Boolean(
                  error.length !== 0 ||
-                 age.length == 0
+                 text.length == 0
                 )} onClick={handleSubmit}>save</Button>
         </DialogActions>
       </Dialog>
