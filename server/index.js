@@ -7,7 +7,7 @@ import bodyParser from "body-parser";
 import userRouter from "./Routes/userRouter.js";
 
 dotenv.config();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 6000;
 const app = express();
 app.use(helmet());
 db();

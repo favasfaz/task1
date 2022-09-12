@@ -23,6 +23,7 @@ export const userLogin = async (req, res, next) => {
 };
 
 export const userDeteils = async (req, res, next) => {
+  console.log(req.body);
   const { name, phone, project, email } = req.body;
   try {
     const ifExist = await userSchema.findOne({ phone });
@@ -38,3 +39,8 @@ export const userDeteils = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getAllUser = async(req,res,next) =>{
+  const users = await userSchema.find({})
+  res.status(201).json(users)
+}

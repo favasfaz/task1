@@ -15,13 +15,16 @@ import { detailsValidation } from "../formValidation/deteilsValidation";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {useNavigate} from 'react-router-dom'
+import SetTimout from "./SetTimout";
 
 function DeteilsPage() {
+  const navigate = useNavigate()
   const handleSubmit = async (e, values) => {
-    console.log(values);
     try {
       await axios.post("/api/users/addDeteils", values);
       toast("Successfully created");
+      navigate('/tableView')
     } catch (error) {
       console.log(error);
       toast.error(
@@ -153,7 +156,9 @@ function DeteilsPage() {
             </div>
           )}
         </Formik>
+   
       </Paper>
+      
       <ToastContainer />
     </Grid>
   );
