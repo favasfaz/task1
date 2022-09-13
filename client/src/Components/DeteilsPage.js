@@ -108,7 +108,7 @@ function DeteilsPage() {
                   value={values.name}
                 />
                 <FormControl fullWidth style={{ marginTop: "20px" }}>
-                  <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                  <InputLabel id="demo-simple-select-label">Projects</InputLabel>
                   <Select
                     required
                     labelId="demo-simple-select-label"

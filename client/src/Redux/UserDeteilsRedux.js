@@ -17,13 +17,8 @@ const usersSlice = createSlice({
   initialState,
   reducers: {
     addingAlarm: (state, action) => {
-    //   if (state.alarms.includes(action.payload)) {
-    //  state.error = 'already in';
-    //  console.log(state.error,'statefrom redux');
-    //   } else {
-    //     state.error = ''
+    
          state.alarms.push(action.payload);
-    //   }
       
     },
   },

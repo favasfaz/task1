@@ -12,34 +12,28 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { useNavigate } from "react-router-dom";
-import { useDispatch,useSelector } from "react-redux";
-import {addingAlarm} from '../Redux/UserDeteilsRedux'
+import { useDispatch, useSelector } from "react-redux";
+import { addingAlarm } from "../Redux/UserDeteilsRedux";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function AlertDialogSlide({ open, setOpen }) {
-  const users = useSelector(state =>state.users)
- 
-  console.log(users," == users statee");
+  const users = useSelector((state) => state.users);
+
   const [text, setText] = React.useState("");
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   let hours = new Date().getHours();
   let minutes = new Date().getMinutes();
   const [fTime, setFtime] = useState(0);
   const [sTime, setStime] = useState(0);
   const [tTime, setTtime] = useState(0);
   const [dTime, setDtime] = useState(0);
-  const [button , setButton] = useState(false)
   const navigate = useNavigate();
-  const dispatch = useDispatch()
-
-  //if (users && users.error.length>0)setError("already in") 
-  //else setError("")
-  
+  const dispatch = useDispatch();
+  const [desc, setDesc] = useState("");
 
   useEffect(() => {
-    
     function getTime(hours, minutes, power, base) {
       let limit = base * power;
       if (minutes + limit >= 60) {
@@ -56,39 +50,46 @@ export default function AlertDialogSlide({ open, setOpen }) {
     setTtime(getTime(hours, minutes, 3, 15));
   }, []);
 
-  const handleText = (e)=>{
-    var format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/
-    if(e.target.value === ''){
-      setError('fill All field')
+
+  const handleText = (e) => {
+    var format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    if (e.target.value === "") {
+      setError("fill All field");
+    } else if (format.test(e.target.value)) {
+      setError("Special charachters not accepted");
+    } else {
+      setError("");
     }
-    else if(format.test(e.target.value)){
-      setError('Special charachters not accepted')
-    }
-    else{
-      setError('')
-    }
-  }
+  };
+
 
   const handleClose = () => {
     setOpen(false);
   };
 
   const handleChange = (e) => {
-    setError("")
-    
+    setError("");
+
     setText(e.target.value);
     setDtime(e.target.value);
   };
 
-  const handleSubmit = async() => {
-  if (users.alarms.includes(text)) {
-    console.log('statefrom redux');
-    setError("already in")
-     } else {
-      setError("")
-         await dispatch(addingAlarm(text))
-         navigate(`/timout/${dTime}`);
-     }
+  const handleSubmit = async () => {
+    const res = users.alarms.find((item, i) => {
+      if (item.timer == text) return true;
+    });
+    if (res) {
+      setError("already in");
+    } else {
+      setError("");
+      const data = { timer: text, desc: desc };
+      await dispatch(addingAlarm(data));
+      navigate(`/timout/${dTime}`);
+    }
+  };
+
+  const handleDesc = (e) => {
+    setDesc(e.target.value);
   };
 
   return (
@@ -102,28 +103,31 @@ export default function AlertDialogSlide({ open, setOpen }) {
       >
         <DialogTitle>{"Alarm Reminder?"}</DialogTitle>
         <DialogContent sx={{ width: "50vh" }}>
-          {error && <Typography color='error.main' variant="body1">{error}</Typography>}
+          {error && (
+            <Typography color="error.main" variant="body1">
+              {error}
+            </Typography>
+          )}
           <DialogContentText id="alert-dialog-slide-description">
             <TextField
               id="standard-multiline-static"
-              label="Multiline"
+              label="Write Here"
               multiline
               rows={4}
-              defaultValue="Write Something"
               fullWidth
               variant="standard"
               helperText={error}
-              onKeyUp={(e)=>handleText(e)}
+              onChange={(e) => handleDesc(e)}
+              onKeyUp={(e) => handleText(e)}
             />
             <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-              <InputLabel id="demo-select-small">text</InputLabel>
+              <InputLabel id="demo-select-small">Alarm</InputLabel>
               <Select
                 labelId="demo-select-small"
                 id="demo-select-small"
                 value={text}
                 label="alarm"
                 onChange={(e) => handleChange(e)}
-
               >
                 <MenuItem value="">
                   <em>None</em>
@@ -136,12 +140,12 @@ export default function AlertDialogSlide({ open, setOpen }) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button 
-           disabled={Boolean(
-                 error.length !== 0 ||
-                 text.length == 0
-                )}
-                 onClick={handleSubmit}>save</Button>
+          <Button
+            disabled={Boolean(error.length !== 0 || text.length == 0)}
+            onClick={handleSubmit}
+          >
+            save
+          </Button>
         </DialogActions>
       </Dialog>
     </div>
