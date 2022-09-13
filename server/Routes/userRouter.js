@@ -5,5 +5,5 @@ const router = express.Router();
 
 router.route("/login").post(userLogin);
 router.route("/addDeteils").post(verifyToken, userDeteils);
-router.route('/').get(getAllUser)
+router.route('/').get(verifyToken,getAllUser)
 export default router;

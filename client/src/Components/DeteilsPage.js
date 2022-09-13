@@ -57,7 +57,7 @@ function DeteilsPage() {
             name: "",
             email: "",
             phone: "",
-            projects: "",
+            project: "",
           }}
           validationSchema={detailsValidation}
         >
@@ -114,9 +114,9 @@ function DeteilsPage() {
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     label="Project"
-                    name="projects"
-                    error={Boolean(touched.projects && errors.projects)}
-                    helperText={touched.projects && errors.projects}
+                    name="project"
+                    error={Boolean(touched.project && errors.project)}
+                    helperText={touched.project && errors.project}
                     onBlur={handleBlur}
                     onChange={handleChange}
                     value={values.project}
@@ -137,8 +137,8 @@ function DeteilsPage() {
                     values.email === "" ||
                     errors.phone ||
                     values.phone === "" ||
-                    errors.projects ||
-                    values.projects === "" ||
+                    errors.project ||
+                    values.project === "" ||
                     errors.name ||
                     values.name === ""
                 )}

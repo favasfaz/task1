@@ -1,4 +1,4 @@
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, Paper } from "@mui/material";
 import React from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import { useParams, useNavigate } from "react-router-dom";
@@ -20,7 +20,11 @@ function SetTimout() {
   return (
     <>
       <Grid container mt={4} justifyContent="center">
-        <Grid>
+      <Paper
+        elevation={3}
+        style={{ padding: 40, height: "60vh", width: 380, margin: "20px auto" }}
+      >
+         <Grid align="center" alignItems="center" justifyContent="center">
           <Button
             mt={4}
             justifyContent="center"
@@ -39,6 +43,7 @@ function SetTimout() {
         >
           {({ remainingTime }) => remainingTime}
         </CountdownCircleTimer>
+      </Paper>
       </Grid>
     </>
   );

@@ -4,7 +4,7 @@ const initialState = {
   loading: false,
   userDeteils: [],
   alarms: [],
-  error: "",
+  error: ''
 };
 
 export const userDeteils = createAsyncThunk("users/userDeteils", async () => {
@@ -17,11 +17,14 @@ const usersSlice = createSlice({
   initialState,
   reducers: {
     addingAlarm: (state, action) => {
-      if (state.alarms.includes(action.payload)) {
-      (state.error = "you already set reminder");
-      } else {
-        state.alarms.push(action.payload);
-      }
+    //   if (state.alarms.includes(action.payload)) {
+    //  state.error = 'already in';
+    //  console.log(state.error,'statefrom redux');
+    //   } else {
+    //     state.error = ''
+         state.alarms.push(action.payload);
+    //   }
+      
     },
   },
   extraReducers: (builder) => {

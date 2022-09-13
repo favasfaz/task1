@@ -20,6 +20,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function AlertDialogSlide({ open, setOpen }) {
   const users = useSelector(state =>state.users)
+ 
+  console.log(users," == users statee");
   const [text, setText] = React.useState("");
   const [error, setError] = useState('');
   let hours = new Date().getHours();
@@ -28,12 +30,18 @@ export default function AlertDialogSlide({ open, setOpen }) {
   const [sTime, setStime] = useState(0);
   const [tTime, setTtime] = useState(0);
   const [dTime, setDtime] = useState(0);
+  const [button , setButton] = useState(false)
   const navigate = useNavigate();
   const dispatch = useDispatch()
+
+  //if (users && users.error.length>0)setError("already in") 
+  //else setError("")
+  
+
   useEffect(() => {
+    
     function getTime(hours, minutes, power, base) {
       let limit = base * power;
-      console.log(typeof hours, typeof minutes);
       if (minutes + limit >= 60) {
         minutes = minutes + limit - 60;
         minutes = minutes < 10 ? `0${minutes}` : minutes;
@@ -61,23 +69,26 @@ export default function AlertDialogSlide({ open, setOpen }) {
     }
   }
 
-
   const handleClose = () => {
     setOpen(false);
   };
 
   const handleChange = (e) => {
+    setError("")
+    
     setText(e.target.value);
     setDtime(e.target.value);
   };
 
   const handleSubmit = async() => {
-   await dispatch(addingAlarm(text))
-   if(users.error.length > 0){
-    setError(users.error)
-   }else{
-    navigate(`/timout/${dTime}`);
-   }
+  if (users.alarms.includes(text)) {
+    console.log('statefrom redux');
+    setError("already in")
+     } else {
+      setError("")
+         await dispatch(addingAlarm(text))
+         navigate(`/timout/${dTime}`);
+     }
   };
 
   return (
@@ -125,10 +136,12 @@ export default function AlertDialogSlide({ open, setOpen }) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button  disabled={Boolean(
+          <Button 
+           disabled={Boolean(
                  error.length !== 0 ||
                  text.length == 0
-                )} onClick={handleSubmit}>save</Button>
+                )}
+                 onClick={handleSubmit}>save</Button>
         </DialogActions>
       </Dialog>
     </div>

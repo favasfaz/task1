@@ -23,10 +23,10 @@ export const userLogin = async (req, res, next) => {
 };
 
 export const userDeteils = async (req, res, next) => {
-  console.log(req.body);
   const { name, phone, project, email } = req.body;
   try {
-    const ifExist = await userSchema.findOne({ phone });
+    const ifExist = await userSchema.findOne({ phone,project });
+    console.log(ifExist,'exist');
     if (ifExist)
       return next(
         createError(400, { phone: ifExist.phone, name: ifExist.name })
